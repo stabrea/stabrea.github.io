@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Taofik Bishi — Finance & Cybersecurity Professional. Portfolio showcasing projects in financial analysis, cybersecurity, and software development.">
+  <meta name="author" content="Taofik Bishi">
+  <title>Taofik Bishi | Finance &amp; Cybersecurity Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Matrix Background Canvas -->
+  <canvas id="matrix-bg" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">TB<span class="accent">.</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <p class="hero-greeting fade-in">Hello, I'm</p>
+      <h1 class="hero-name fade-in">Taofik Bishi</h1>
+      <h2 class="hero-title fade-in">Finance &amp; Cybersecurity Professional</h2>
+      <p class="hero-tagline fade-in" id="typed-tagline"></p>
+      <div class="hero-cta fade-in">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-outline">Contact Me</a>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator" aria-hidden="true">
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">About Me</h2>
+      <div class="about-content fade-in">
+        <div class="about-text">
+          <p>
+            I'm a dual-major in <strong>Finance</strong> and <strong>Cybersecurity</strong> at
+            Georgia State University, driven by the belief that the future of financial systems
+            depends on robust security architecture. My work sits at the intersection of these
+            two disciplines — building tools that protect, analyze, and optimize.
+          </p>
+          <p>
+            With hands-on experience in <strong>tax compliance consulting</strong>, I've developed
+            a sharp eye for regulatory detail and data-driven decision-making. Beyond the
+            professional sphere, I'm a passionate <strong>game developer</strong>, building
+            interactive experiences with TypeScript and Canvas2D — a pursuit that sharpens my
+            software engineering skills and creative problem-solving daily.
+          </p>
+          <p>
+            I thrive in environments where analytical thinking meets technical execution, whether
+            that's modeling financial risk, auditing network security, or shipping code.
+          </p>
+        </div>
+        <div class="about-highlights">
+          <div class="highlight-card">
+            <span class="highlight-icon">&#9878;</span>
+            <h3>Finance</h3>
+            <p>Financial analysis, tax compliance, risk modeling</p>
+          </div>
+          <div class="highlight-card">
+            <span class="highlight-icon">&#9737;</span>
+            <h3>Cybersecurity</h3>
+            <p>Network security, fraud detection, encryption</p>
+          </div>
+          <div class="highlight-card">
+            <span class="highlight-icon">&#9000;</span>
+            <h3>Development</h3>
+            <p>Full-stack apps, game engines, data pipelines</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title fade-in">Skills &amp; Expertise</h2>
+      <div class="skills-grid fade-in">
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">Python</span>
+            <span class="skill-level">90%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+          <span class="skill-tag">Scripting &middot; Automation &middot; Data</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">SQL</span>
+            <span class="skill-level">85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+          <span class="skill-tag">Databases &middot; Analytics &middot; Reporting</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">TypeScript</span>
+            <span class="skill-level">85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+          <span class="skill-tag">Web Apps &middot; Game Dev &middot; Tooling</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">R</span>
+            <span class="skill-level">70%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+          <span class="skill-tag">Statistics &middot; Modeling &middot; Visualization</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">Financial Analysis</span>
+            <span class="skill-level">90%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+          <span class="skill-tag">Valuation &middot; Risk &middot; Forecasting</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">Tax Compliance</span>
+            <span class="skill-level">85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+          <span class="skill-tag">Regulatory &middot; Auditing &middot; Reporting</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">Cybersecurity</span>
+            <span class="skill-level">80%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+          <span class="skill-tag">NetSec &middot; Encryption &middot; Threat Analysis</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">Game Development</span>
+            <span class="skill-level">80%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+          <span class="skill-tag">Canvas2D &middot; ECS &middot; Pixel Art</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">Scrum / Agile</span>
+            <span class="skill-level">85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+          <span class="skill-tag">Sprint Planning &middot; Standups &middot; Retros</span>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-name">Data Analytics</span>
+            <span class="skill-level">85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+          <span class="skill-tag">Visualization &middot; ETL &middot; Insight</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Projects</h2>
+      <div class="projects-grid fade-in">
+
+        <article class="project-card">
+          <div class="project-icon">&#128274;</div>
+          <h3 class="project-name">NetSec Toolkit</h3>
+          <p class="project-desc">
+            A comprehensive network security toolkit featuring port scanning, vulnerability
+            assessment, and traffic analysis utilities built in Python. Designed for
+            penetration testing and security auditing workflows.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>Networking</span><span>Security</span>
+          </div>
+          <a href="https://github.com/stabrea/netsec-toolkit" target="_blank" rel="noopener noreferrer" class="project-link">
+            View on GitHub &rarr;
+          </a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-icon">&#128200;</div>
+          <h3 class="project-name">Tax Compliance Engine</h3>
+          <p class="project-desc">
+            Automated tax compliance validation engine that cross-references regulatory
+            databases, flags discrepancies, and generates audit-ready reports for
+            multi-jurisdiction tax filings.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>SQL</span><span>Finance</span>
+          </div>
+          <a href="https://github.com/stabrea/tax-compliance-engine" target="_blank" rel="noopener noreferrer" class="project-link">
+            View on GitHub &rarr;
+          </a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-icon">&#128202;</div>
+          <h3 class="project-name">Financial Risk Analyzer</h3>
+          <p class="project-desc">
+            Monte Carlo simulation and VaR modeling tool for portfolio risk assessment.
+            Ingests market data, runs stochastic models, and outputs risk metrics with
+            interactive visualizations.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>R</span><span>Statistics</span>
+          </div>
+          <a href="https://github.com/stabrea/financial-risk-analyzer" target="_blank" rel="noopener noreferrer" class="project-link">
+            View on GitHub &rarr;
+          </a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-icon">&#128269;</div>
+          <h3 class="project-name">Fraud Detection System</h3>
+          <p class="project-desc">
+            Machine learning pipeline for real-time financial fraud detection. Uses
+            anomaly detection algorithms and pattern recognition to flag suspicious
+            transactions with high precision.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>ML</span><span>SQL</span>
+          </div>
+          <a href="https://github.com/stabrea/fraud-detection-system" target="_blank" rel="noopener noreferrer" class="project-link">
+            View on GitHub &rarr;
+          </a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-icon">&#128273;</div>
+          <h3 class="project-name">CryptoGuard</h3>
+          <p class="project-desc">
+            End-to-end encryption utility library implementing modern cryptographic
+            standards. Features key management, secure file encryption, and digital
+            signature verification.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>Cryptography</span><span>Security</span>
+          </div>
+          <a href="https://github.com/stabrea/cryptoguard" target="_blank" rel="noopener noreferrer" class="project-link">
+            View on GitHub &rarr;
+          </a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-icon">&#127918;</div>
+          <h3 class="project-name">EDILAS</h3>
+          <p class="project-desc">
+            A 2D action RPG built from scratch with TypeScript and Canvas2D. Features an
+            ECS architecture, procedural world generation, pixel-art paper-doll character
+            system, and real-time combat.
+          </p>
+          <div class="project-tags">
+            <span>TypeScript</span><span>Canvas2D</span><span>ECS</span>
+          </div>
+          <a href="https://github.com/stabrea/EDILAS" target="_blank" rel="noopener noreferrer" class="project-link">
+            View on GitHub &rarr;
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title fade-in">Experience</h2>
+      <div class="timeline fade-in">
+
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">May 2025 &ndash; Dec 2025</span>
+            <h3>Tax Associate Intern</h3>
+            <h4>Transportation Tax Consulting LLC</h4>
+            <p>
+              Assisted with multi-state tax compliance for transportation industry clients.
+              Conducted research on regulatory requirements, prepared tax filings, analyzed
+              financial data for compliance reporting, and developed automated tools to
+              streamline the audit preparation process.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">Feb 2024 &ndash; Present</span>
+            <h3>Kitchen Manager</h3>
+            <h4>Chipotle Mexican Grill</h4>
+            <p>
+              Lead kitchen operations including inventory management, food safety compliance,
+              and team coordination for high-volume service. Manage scheduling, train new
+              team members, and optimize workflows to reduce waste and improve throughput.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">Feb 2023 &ndash; Mar 2024</span>
+            <h3>Recreation Center Staff</h3>
+            <h4>Georgia State University Recreation Center</h4>
+            <p>
+              Managed facility operations, ensured safety protocol compliance, and provided
+              customer service for campus recreation programs. Coordinated event logistics
+              and maintained equipment and facility standards.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">Jun 2022 &ndash; Aug 2022</span>
+            <h3>Intern</h3>
+            <h4>Newat Nigeria</h4>
+            <p>
+              Gained foundational professional experience in a business environment.
+              Supported day-to-day operations, assisted with data entry and administrative
+              tasks, and developed workplace communication and organizational skills.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Education & Certifications Section -->
+  <section id="education" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Education &amp; Certifications</h2>
+      <div class="education-grid fade-in">
+
+        <div class="education-column">
+          <h3 class="subsection-title">Education</h3>
+
+          <div class="edu-card">
+            <div class="edu-icon">&#127891;</div>
+            <div class="edu-details">
+              <h4>Georgia State University</h4>
+              <p class="edu-degree">B.S. Finance &amp; Cybersecurity</p>
+              <p class="edu-date">2024 &ndash; 2026</p>
+              <p class="edu-location">Atlanta, GA</p>
+            </div>
+          </div>
+
+          <div class="edu-card">
+            <div class="edu-icon">&#127891;</div>
+            <div class="edu-details">
+              <h4>Georgia State University &ndash; Perimeter College</h4>
+              <p class="edu-degree">A.S. Business Administration</p>
+              <p class="edu-date">2022 &ndash; 2024</p>
+              <p class="edu-location">Atlanta, GA</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="education-column">
+          <h3 class="subsection-title">Certifications</h3>
+
+          <div class="cert-card">
+            <div class="cert-badge">CSM</div>
+            <div class="cert-details">
+              <h4>Certified Scrum Master</h4>
+              <p>Scrum Alliance</p>
+            </div>
+          </div>
+
+          <div class="cert-card">
+            <div class="cert-badge">G</div>
+            <div class="cert-details">
+              <h4>Digital Marketing &amp; E-Commerce</h4>
+              <p>Google</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title fade-in">Get In Touch</h2>
+      <p class="contact-intro fade-in">
+        I'm always open to discussing new opportunities, collaborations, or interesting
+        problems at the intersection of finance and technology.
+      </p>
+      <div class="contact-grid fade-in">
+
+        <a href="mailto:bishitaofik@gmail.com" class="contact-card">
+          <div class="contact-icon">&#9993;</div>
+          <h3>Email</h3>
+          <p>bishitaofik@gmail.com</p>
+        </a>
+
+        <a href="https://linkedin.com/in/taofikbishi" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <div class="contact-icon">in</div>
+          <h3>LinkedIn</h3>
+          <p>linkedin.com/in/taofikbishi</p>
+        </a>
+
+        <a href="https://github.com/stabrea" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <div class="contact-icon">&lt;/&gt;</div>
+          <h3>GitHub</h3>
+          <p>github.com/stabrea</p>
+        </a>
+
+        <div class="contact-card">
+          <div class="contact-icon">&#9906;</div>
+          <h3>Location</h3>
+          <p>Atlanta, GA</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Taofik Bishi. Built with purpose.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
