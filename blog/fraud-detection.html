@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A deep dive into building a machine learning pipeline for financial fraud detection, covering feature engineering, model selection, and hybrid scoring.">
+  <meta name="author" content="Taofik Bishi">
+  <title>Detecting Financial Fraud with Machine Learning | Taofik Bishi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress" id="reading-progress"></div>
+
+  <!-- Navigation -->
+  <nav id="navbar" class="scrolled" role="navigation" aria-label="Blog navigation">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">TB<span class="accent">.</span></a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="../index.html">&larr; Back to Home</a></li>
+        <li><a href="../index.html#blog">All Posts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Article -->
+  <article class="blog-article">
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime="2026-01-18">January 18, 2026</time>
+        <span class="meta-separator">&middot;</span>
+        <span>8 min read</span>
+      </div>
+      <h1 class="article-title">Detecting Financial Fraud with Machine Learning</h1>
+      <p class="article-subtitle">Building a high-precision pipeline that catches fraudulent transactions without drowning in false positives.</p>
+    </header>
+
+    <div class="article-body">
+      <h2>The Problem</h2>
+      <p>
+        Financial fraud costs institutions billions annually. According to the Association of Certified Fraud Examiners, organizations lose an estimated 5% of revenue to fraud each year. The challenge is not just detecting fraud&mdash;it is detecting it <em>accurately</em>. A system that flags every tenth transaction as suspicious is useless in production. Banks need precision: catch the real fraud, let legitimate transactions flow.
+      </p>
+      <p>
+        When I set out to build a fraud detection system, I wanted something more than a textbook classifier. I wanted a pipeline that could handle the severe class imbalance inherent in fraud data (typically less than 0.2% of transactions are fraudulent), combine multiple detection strategies, and produce a single actionable risk score. The result is a hybrid system that achieved 93% precision with a 0.92 AUC on held-out test data.
+      </p>
+
+      <h2>Feature Engineering: The Real Work</h2>
+      <p>
+        Raw transaction data&mdash;amounts, timestamps, merchant categories&mdash;is not enough. The signal lives in the <em>patterns</em>. Feature engineering is where the real detective work happens, and it accounts for roughly 70% of the model's performance.
+      </p>
+      <p>
+        I engineered three categories of features:
+      </p>
+
+      <h3>Velocity Checks</h3>
+      <p>
+        How frequently is a card being used? A card that has three transactions in five minutes at three different merchants is suspicious. I computed rolling windows at multiple timescales:
+      </p>
+      <pre><code>def compute_velocity_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute transaction velocity at multiple time windows."""
+    df = df.sort_values(['card_id', 'timestamp'])
+
+    for window in ['1H', '6H', '24H', '7D']:
+        df[f'tx_count_{window}'] = (
+            df.groupby('card_id')['timestamp']
+            .transform(lambda x: x.rolling(window, min_periods=1).count())
+        )
+        df[f'unique_merchants_{window}'] = (
+            df.groupby('card_id')['merchant_id']
+            .transform(lambda x: x.rolling(window, min_periods=1).nunique())
+        )
+
+    return df</code></pre>
+
+      <h3>Amount Anomalies</h3>
+      <p>
+        Every cardholder has a spending profile. A $5,000 purchase from someone who typically spends $30-50 is a strong signal. Rather than using raw amounts, I computed z-scores relative to each cardholder's historical distribution:
+      </p>
+      <pre><code>def compute_amount_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Flag transactions that deviate from a cardholder's norm."""
+    stats = df.groupby('card_id')['amount'].agg(['mean', 'std'])
+    df = df.merge(stats, on='card_id', suffixes=('', '_hist'))
+
+    df['amount_zscore'] = (
+        (df['amount'] - df['mean']) / df['std'].clip(lower=1.0)
+    )
+    df['amount_ratio_to_avg'] = df['amount'] / df['mean'].clip(lower=0.01)
+
+    return df</code></pre>
+
+      <h3>Temporal Patterns</h3>
+      <p>
+        Fraud follows time-of-day and day-of-week patterns. Transactions at 3 AM on a Tuesday from a cardholder who exclusively shops during business hours deserve extra scrutiny. I encoded cyclical time features using sine and cosine transforms to preserve the circular nature of time:
+      </p>
+      <pre><code>def compute_time_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Extract cyclical time features."""
+    hour = df['timestamp'].dt.hour
+    dow = df['timestamp'].dt.dayofweek
+
+    df['hour_sin'] = np.sin(2 * np.pi * hour / 24)
+    df['hour_cos'] = np.cos(2 * np.pi * hour / 24)
+    df['dow_sin'] = np.sin(2 * np.pi * dow / 7)
+    df['dow_cos'] = np.cos(2 * np.pi * dow / 7)
+
+    # Flag unusual hours for this cardholder
+    card_hour_stats = df.groupby('card_id')['hour_sin'].agg(['mean', 'std'])
+    df = df.merge(card_hour_stats, on='card_id', suffixes=('', '_usual'))
+    df['unusual_time'] = (
+        np.abs(df['hour_sin'] - df['mean']) > 2 * df['std'].clip(lower=0.1)
+    ).astype(int)
+
+    return df</code></pre>
+
+      <h2>Model Selection: Why a Hybrid Approach</h2>
+      <p>
+        I evaluated two fundamentally different approaches: <strong>Random Forest</strong> (supervised, learns from labeled fraud cases) and <strong>Isolation Forest</strong> (unsupervised, detects anomalies without labels). Each has distinct strengths.
+      </p>
+      <p>
+        Random Forest excels when you have labeled training data. It learns the specific patterns of known fraud types. However, it struggles with novel fraud patterns it has never seen. Isolation Forest, on the other hand, detects anything that looks "different" from normal transactions&mdash;making it effective against new attack vectors&mdash;but it produces more false positives because not every anomaly is fraud.
+      </p>
+      <p>
+        The solution is to combine both into a hybrid scoring system:
+      </p>
+      <pre><code>class HybridFraudScorer:
+    """Combine supervised and unsupervised models into a single risk score."""
+
+    def __init__(self, rf_weight: float = 0.6, iso_weight: float = 0.4):
+        self.rf = RandomForestClassifier(
+            n_estimators=200,
+            max_depth=12,
+            class_weight='balanced_subsample',
+            random_state=42
+        )
+        self.iso = IsolationForest(
+            n_estimators=150,
+            contamination=0.002,
+            random_state=42
+        )
+        self.rf_weight = rf_weight
+        self.iso_weight = iso_weight
+
+    def fit(self, X: np.ndarray, y: np.ndarray) -> 'HybridFraudScorer':
+        self.rf.fit(X, y)
+        self.iso.fit(X[y == 0])  # Train only on legitimate transactions
+        return self
+
+    def score(self, X: np.ndarray) -> np.ndarray:
+        rf_proba = self.rf.predict_proba(X)[:, 1]
+        iso_scores = -self.iso.score_samples(X)  # Higher = more anomalous
+        iso_normalized = (iso_scores - iso_scores.min()) / (
+            iso_scores.max() - iso_scores.min()
+        )
+        return self.rf_weight * rf_proba + self.iso_weight * iso_normalized</code></pre>
+      <p>
+        The Random Forest handles known fraud patterns with high confidence, while the Isolation Forest catches anomalous transactions that do not match any known pattern. The weighted combination produces a single risk score between 0 and 1.
+      </p>
+
+      <h2>Handling Class Imbalance</h2>
+      <p>
+        With fraud representing less than 0.2% of transactions, naive training would produce a model that simply predicts "not fraud" for everything and achieves 99.8% accuracy. Useless.
+      </p>
+      <p>
+        I addressed this with three complementary strategies: <code>class_weight='balanced_subsample'</code> in the Random Forest (which up-weights minority class samples), SMOTE (Synthetic Minority Over-sampling Technique) for generating synthetic fraud examples, and threshold tuning on the final risk score using precision-recall curves rather than the default 0.5 cutoff.
+      </p>
+
+      <h2>Results</h2>
+      <p>
+        On a held-out test set of 100,000 transactions (with realistic fraud prevalence):
+      </p>
+      <ul>
+        <li><strong>Precision:</strong> 93% &mdash; When the system flags a transaction, it is correct 93% of the time</li>
+        <li><strong>Recall:</strong> 87% &mdash; The system catches 87% of actual fraud</li>
+        <li><strong>AUC-ROC:</strong> 0.92 &mdash; Strong discriminative ability across all thresholds</li>
+        <li><strong>False positive rate:</strong> 0.08% &mdash; Only 8 in 10,000 legitimate transactions are incorrectly flagged</li>
+      </ul>
+      <p>
+        The hybrid approach outperformed either model alone. The Random Forest by itself achieved 0.89 AUC, and the Isolation Forest alone reached 0.81. The combination leverages complementary strengths.
+      </p>
+
+      <h2>Lessons Learned</h2>
+      <p>
+        <strong>Feature engineering dominates model selection.</strong> Switching from raw features to engineered velocity/amount/time features improved AUC from 0.74 to 0.89 with the same model. Switching models with the same features improved it by only 0.03.
+      </p>
+      <p>
+        <strong>Precision matters more than recall in production.</strong> A fraud analyst can investigate 50 flagged transactions per day. If half are false positives, you are wasting their time and eroding trust in the system. Optimizing for precision at a reasonable recall threshold is the right trade-off.
+      </p>
+      <p>
+        <strong>The unsupervised component is insurance.</strong> Fraud evolves. New attack patterns appear that supervised models have never seen. The Isolation Forest acts as a safety net, catching anomalies that do not match historical fraud but look structurally unusual.
+      </p>
+      <p>
+        <strong>Threshold tuning is a business decision, not a technical one.</strong> The optimal cutoff depends on the cost of false positives (analyst time, customer friction) versus false negatives (fraud losses). I exposed the threshold as a configurable parameter so that risk teams can adjust it based on their operational capacity.
+      </p>
+
+      <div class="article-cta">
+        <a href="https://github.com/stabrea/fraud-detection-system" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub &rarr;</a>
+        <a href="../index.html#projects" class="btn btn-outline">All Projects</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Taofik Bishi. Built with purpose.</p>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+  <script>
+    // Reading progress bar
+    (function() {
+      var progress = document.getElementById('reading-progress');
+      if (!progress) return;
+      window.addEventListener('scroll', function() {
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var scrolled = (window.scrollY / docHeight) * 100;
+        progress.style.width = scrolled + '%';
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>

@@ -3,8 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Taofik Bishi — Finance & Cybersecurity Professional. Portfolio showcasing projects in financial analysis, cybersecurity, and software development.">
+  <meta name="description" content="Taofik Bishi — Finance & Cybersecurity Professional. Portfolio showcasing projects in financial analysis, cybersecurity, machine learning, and software development.">
+  <meta name="keywords" content="Taofik Bishi, finance, cybersecurity, portfolio, fraud detection, tax compliance, network security, Python, machine learning, Georgia State University">
   <meta name="author" content="Taofik Bishi">
+  <link rel="canonical" href="https://stabrea.github.io/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Taofik Bishi | Finance & Cybersecurity Professional">
+  <meta property="og:description" content="Portfolio showcasing projects in financial analysis, cybersecurity, machine learning, and software development.">
+  <meta property="og:image" content="https://stabrea.github.io/og-image.png">
+  <meta property="og:url" content="https://stabrea.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Taofik Bishi Portfolio">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Taofik Bishi | Finance & Cybersecurity Professional">
+  <meta name="twitter:description" content="Portfolio showcasing projects in financial analysis, cybersecurity, machine learning, and software development.">
+  <meta name="twitter:image" content="https://stabrea.github.io/og-image.png">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Taofik Bishi",
+    "jobTitle": "Finance & Cybersecurity Professional",
+    "url": "https://stabrea.github.io",
+    "sameAs": [
+      "https://github.com/stabrea",
+      "https://linkedin.com/in/taofikbishi"
+    ],
+    "email": "bishitaofik@gmail.com",
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Georgia State University"
+    },
+    "knowsAbout": ["Finance", "Cybersecurity", "Machine Learning", "Python", "SQL", "Tax Compliance"]
+  }
+  </script>
+
   <title>Taofik Bishi | Finance &amp; Cybersecurity Professional</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +66,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#blog">Blog</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#education">Education</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -44,6 +83,7 @@
       <p class="hero-tagline fade-in" id="typed-tagline"></p>
       <div class="hero-cta fade-in">
         <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="resume.html" class="btn btn-outline">Download Resume</a>
         <a href="#contact" class="btn btn-outline">Contact Me</a>
       </div>
     </div>
@@ -303,8 +343,57 @@
     </div>
   </section>
 
+  <!-- Blog Section -->
+  <section id="blog" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title fade-in">Blog</h2>
+      <div class="blog-grid fade-in">
+
+        <a href="blog/fraud-detection.html" class="blog-card">
+          <div class="blog-card-tag">Machine Learning</div>
+          <h3 class="blog-card-title">Detecting Financial Fraud with Machine Learning</h3>
+          <p class="blog-card-excerpt">
+            Building a high-precision pipeline that catches fraudulent transactions without drowning in false positives. Covers feature engineering, hybrid scoring, and real-world results.
+          </p>
+          <div class="blog-card-meta">
+            <time datetime="2026-01-18">Jan 18, 2026</time>
+            <span>&middot;</span>
+            <span>8 min read</span>
+          </div>
+        </a>
+
+        <a href="blog/tax-compliance.html" class="blog-card">
+          <div class="blog-card-tag">Finance</div>
+          <h3 class="blog-card-title">Automating Multi-State Sales Tax Compliance</h3>
+          <p class="blog-card-excerpt">
+            Taming the chaos of 50 states, 10,000+ local jurisdictions, and constantly shifting nexus rules with Python and SQL.
+          </p>
+          <div class="blog-card-meta">
+            <time datetime="2026-02-01">Feb 1, 2026</time>
+            <span>&middot;</span>
+            <span>9 min read</span>
+          </div>
+        </a>
+
+        <a href="blog/network-security.html" class="blog-card">
+          <div class="blog-card-tag">Cybersecurity</div>
+          <h3 class="blog-card-title">Building a Network Security Assessment Toolkit from Scratch</h3>
+          <p class="blog-card-excerpt">
+            Why I wrote my own port scanner, banner grabber, and vulnerability checker instead of reaching for Nmap. A deep dive into Python sockets and threading.
+          </p>
+          <div class="blog-card-meta">
+            <time datetime="2026-02-10">Feb 10, 2026</time>
+            <span>&middot;</span>
+            <span>9 min read</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Experience Section -->
-  <section id="experience" class="section section-alt">
+  <section id="experience" class="section">
     <div class="container">
       <h2 class="section-title fade-in">Experience</h2>
       <div class="timeline fade-in">
@@ -371,7 +460,7 @@
   </section>
 
   <!-- Education & Certifications Section -->
-  <section id="education" class="section">
+  <section id="education" class="section section-alt">
     <div class="container">
       <h2 class="section-title fade-in">Education &amp; Certifications</h2>
       <div class="education-grid fade-in">
@@ -425,13 +514,16 @@
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="section section-alt">
+  <section id="contact" class="section">
     <div class="container">
       <h2 class="section-title fade-in">Get In Touch</h2>
       <p class="contact-intro fade-in">
         I'm always open to discussing new opportunities, collaborations, or interesting
         problems at the intersection of finance and technology.
       </p>
+      <div class="contact-resume fade-in">
+        <a href="resume.html" class="btn btn-primary">Download Resume</a>
+      </div>
       <div class="contact-grid fade-in">
 
         <a href="mailto:bishitaofik@gmail.com" class="contact-card">
