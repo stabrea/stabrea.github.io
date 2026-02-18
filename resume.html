@@ -522,12 +522,12 @@
         collected.push({ email: email, timestamp: new Date().toISOString() });
         localStorage.setItem('resume_emails', JSON.stringify(collected));
 
-        // Send to Web3Forms (replace YOUR_ACCESS_KEY_HERE with your actual key from https://web3forms.com)
+        // Send to Web3Forms (replace d6acafe5-a19f-4787-92f9-820378693a3b with your actual key from https://web3forms.com)
         fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            access_key: 'YOUR_ACCESS_KEY_HERE',
+            access_key: 'd6acafe5-a19f-4787-92f9-820378693a3b',
             subject: 'Resume Download Request',
             email: email,
             message: 'Someone downloaded your resume from stabrea.github.io'
