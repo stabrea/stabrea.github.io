@@ -3,15 +3,264 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Resume request page for Taofik Bishi — Finance & Cybersecurity Professional.">
+  <meta name="description" content="Resume of Taofik Bishi — Dual-degree Finance and Cybersecurity student at Georgia State University with experience in tax compliance, financial analysis, and security tooling.">
   <meta name="author" content="Taofik Bishi">
+  <meta property="og:title" content="Resume — Taofik Bishi">
+  <meta property="og:description" content="Dual-degree Finance and Cybersecurity student at GSU with hands-on experience in sales tax compliance, financial analysis, and security tooling.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://stabrea.github.io/resume.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1f6e1;</text></svg>">
   <title>Resume | Taofik Bishi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .resume-page {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 24px 80px;
+    }
+    .resume-header {
+      text-align: center;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .resume-header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .resume-header .resume-location {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    .resume-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+    .resume-links a {
+      color: var(--accent);
+    }
+    .resume-links span {
+      color: var(--text-muted);
+    }
+    .resume-download-bar {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .resume-section {
+      margin-bottom: 40px;
+    }
+    .resume-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .resume-summary {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+    .resume-entry {
+      margin-bottom: 24px;
+    }
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .resume-entry-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .resume-entry-date {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .resume-entry-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .resume-entry p,
+    .resume-entry li {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .resume-entry ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    .resume-entry li {
+      margin-bottom: 4px;
+    }
+    .resume-projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .resume-project {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+    }
+    .resume-project h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .resume-project p {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+    .resume-skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .resume-skills-list span {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-radius: 20px;
+      border: 1px solid var(--border-accent);
+    }
+    .resume-certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .resume-cert {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+    }
+    .resume-cert small {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+    .resume-leadership-list li {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    /* Email gate modal */
+    .email-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 14, 23, 0.9);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .email-modal-overlay.active {
+      display: flex;
+    }
+    .email-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
+    }
+    .email-modal h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .email-modal p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+    .email-modal input[type="email"] {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color var(--transition);
+      margin-bottom: 12px;
+    }
+    .email-modal input[type="email"]:focus {
+      border-color: var(--accent);
+    }
+    .email-modal .btn {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .email-modal .modal-skip {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+    }
+    .email-modal .modal-skip:hover {
+      color: var(--text-secondary);
+    }
+    .email-modal .modal-error {
+      color: #ff5555;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .resume-page { padding: 90px 16px 60px; }
+      .resume-entry-header { flex-direction: column; }
+      .resume-projects-grid { grid-template-columns: 1fr; }
+      .resume-links { flex-direction: column; gap: 8px; }
+    }
+  </style>
 </head>
 <body>
+  <canvas id="matrix-bg" aria-hidden="true"></canvas>
+
   <!-- Navigation -->
   <nav id="navbar" class="scrolled" role="navigation" aria-label="Resume navigation">
     <div class="nav-container">
@@ -22,24 +271,209 @@
     </div>
   </nav>
 
-  <!-- Resume Section -->
-  <section class="hero" style="min-height: 100vh;">
-    <div class="hero-content">
-      <div class="resume-icon" style="font-size: 3rem; margin-bottom: 24px;">&#128196;</div>
-      <h1 class="hero-name" style="font-size: clamp(2rem, 5vw, 3rem);">Resume</h1>
-      <h2 class="hero-title" style="margin-bottom: 24px;">Available Upon Request</h2>
-      <p style="color: var(--text-secondary); max-width: 480px; margin: 0 auto 40px; font-size: 0.95rem; line-height: 1.7;">
-        I would be happy to share my full resume directly. Please reach out via email and I will send it over promptly.
-      </p>
-      <div class="hero-cta">
-        <a href="mailto:bishitaofik@gmail.com" class="btn btn-primary">Email Me</a>
-        <a href="index.html#contact" class="btn btn-outline">Other Contact Options</a>
+  <!-- Email Gate Modal -->
+  <div class="email-modal-overlay" id="email-modal">
+    <div class="email-modal">
+      <h3>Download Resume (PDF)</h3>
+      <p>Enter your email to receive the latest version of my resume.</p>
+      <div class="modal-error" id="modal-error">Please enter a valid email address.</div>
+      <input type="email" id="email-input" placeholder="you@example.com" autocomplete="email">
+      <button class="btn btn-primary" id="email-submit">Download PDF</button>
+      <button class="modal-skip" id="email-skip">No thanks, just view the web version</button>
+    </div>
+  </div>
+
+  <!-- Resume Content -->
+  <div class="resume-page">
+    <header class="resume-header">
+      <h1>Taofik Bishi</h1>
+      <p class="resume-location">Atlanta, GA 30341</p>
+      <div class="resume-links">
+        <a href="mailto:bishitaofik@gmail.com">bishitaofik@gmail.com</a>
+        <span>|</span>
+        <span>470-926-3081</span>
+        <span>|</span>
+        <a href="https://linkedin.com/in/taofikbishi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <span>|</span>
+        <a href="https://github.com/stabrea" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <span>|</span>
+        <a href="https://stabrea.github.io" target="_blank" rel="noopener noreferrer">stabrea.github.io</a>
       </div>
-      <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border);">
-        <p style="color: var(--text-muted); font-size: 0.85rem; font-family: var(--font-mono);">bishitaofik@gmail.com</p>
+    </header>
+
+    <div class="resume-download-bar">
+      <button class="btn btn-primary" id="download-pdf-btn">Download PDF</button>
+    </div>
+
+    <!-- Summary -->
+    <div class="resume-section">
+      <h2 class="resume-section-title">Summary</h2>
+      <p class="resume-summary">
+        Dual-degree Finance and Cybersecurity student at Georgia State University (Honors College, 3.50 GPA) with hands-on experience in sales tax compliance, financial analysis, and security tooling. Combines strong analytical foundations in risk modeling and regulatory frameworks with practical software engineering skills in Python, TypeScript, SQL, and Rust. Seeking opportunities at the intersection of finance and technology.
+      </p>
+    </div>
+
+    <!-- Education -->
+    <div class="resume-section">
+      <h2 class="resume-section-title">Education</h2>
+
+      <div class="resume-entry">
+        <div class="resume-entry-header">
+          <span class="resume-entry-title">Georgia State University &mdash; J. Mack Robinson College of Business</span>
+          <span class="resume-entry-date">Expected Fall 2026</span>
+        </div>
+        <div class="resume-entry-subtitle">BBA in Computer Information Systems (Cybersecurity) &amp; BBA in Finance</div>
+        <p>GPA: 3.50 | Honors College | Atlanta, GA</p>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-header">
+          <span class="resume-entry-title">Georgia State University &mdash; Perimeter College</span>
+          <span class="resume-entry-date">Completed Fall 2024</span>
+        </div>
+        <div class="resume-entry-subtitle">Associate of Science in Business Administration</div>
+        <p>GPA: 3.87 | Atlanta, GA</p>
       </div>
     </div>
-  </section>
+
+    <!-- Experience -->
+    <div class="resume-section">
+      <h2 class="resume-section-title">Experience</h2>
+
+      <div class="resume-entry">
+        <div class="resume-entry-header">
+          <span class="resume-entry-title">Tax Associate Intern &mdash; Transportation Tax Consulting LLC</span>
+          <span class="resume-entry-date">May 2025 &ndash; Dec 2025</span>
+        </div>
+        <ul>
+          <li>Assisted with multi-state sales tax compliance for transportation industry clients across 15+ jurisdictions</li>
+          <li>Built automated compliance validation tools in Python and SQL that reduced quarterly filing time from days to minutes</li>
+          <li>Developed refund detection queries that surfaced $47,000+ in recoverable overpayments across client portfolios</li>
+          <li>Conducted research on nexus thresholds, exemption rules, and regulatory requirements for multi-state filings</li>
+        </ul>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-header">
+          <span class="resume-entry-title">Kitchen Manager &mdash; Chipotle Mexican Grill</span>
+          <span class="resume-entry-date">Feb 2024 &ndash; Present</span>
+        </div>
+        <ul>
+          <li>Lead kitchen operations including inventory management, food safety compliance, and team coordination</li>
+          <li>Manage scheduling for 15+ team members, train new hires, and optimize workflows to reduce waste</li>
+          <li>Maintain ServSafe certification and ensure compliance with health and safety standards</li>
+        </ul>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-header">
+          <span class="resume-entry-title">Recreation Center Student Assistant &mdash; Georgia State University</span>
+          <span class="resume-entry-date">Feb 2023 &ndash; Mar 2024</span>
+        </div>
+        <ul>
+          <li>Managed facility operations and ensured safety protocol compliance for campus recreation programs</li>
+          <li>Coordinated event logistics and maintained equipment and facility standards</li>
+        </ul>
+      </div>
+
+      <div class="resume-entry">
+        <div class="resume-entry-header">
+          <span class="resume-entry-title">Business Intern &mdash; Newat Nigeria</span>
+          <span class="resume-entry-date">Jun 2022 &ndash; Aug 2022</span>
+        </div>
+        <ul>
+          <li>Supported day-to-day business operations, data entry, and administrative tasks</li>
+          <li>Developed foundational professional communication and organizational skills</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="resume-section">
+      <h2 class="resume-section-title">Projects</h2>
+      <div class="resume-projects-grid">
+        <div class="resume-project">
+          <h4>Fraud Detection System</h4>
+          <p>ML pipeline using Random Forest + Isolation Forest hybrid scoring. 93% precision, 0.92 AUC on held-out data. Python, scikit-learn, pandas.</p>
+        </div>
+        <div class="resume-project">
+          <h4>Tax Compliance Engine</h4>
+          <p>Automated multi-jurisdiction tax calculation, nexus monitoring, and refund detection. Python, SQL, PostgreSQL.</p>
+        </div>
+        <div class="resume-project">
+          <h4>Financial Risk Analyzer</h4>
+          <p>Monte Carlo VaR simulation and portfolio risk metrics with interactive visualizations. Python, R, NumPy.</p>
+        </div>
+        <div class="resume-project">
+          <h4>Network Security Toolkit</h4>
+          <p>Port scanning, banner grabbing, vulnerability assessment, and SSL/TLS auditing. Python, sockets, threading.</p>
+        </div>
+        <div class="resume-project">
+          <h4>CryptoGuard</h4>
+          <p>Encryption library with AES-256-GCM, PBKDF2 key derivation, password analysis, and file encryption. Python.</p>
+        </div>
+        <div class="resume-project">
+          <h4>SQL Financial Analytics</h4>
+          <p>Complex queries for financial reporting, trend analysis, and compliance auditing across MySQL, PostgreSQL, Oracle.</p>
+        </div>
+        <div class="resume-project">
+          <h4>EDILAS (Dark RPG)</h4>
+          <p>2D action RPG built from scratch. 134 TypeScript files, ECS architecture, Canvas2D + WebGL rendering, procedural world generation.</p>
+        </div>
+        <div class="resume-project">
+          <h4>Sentinel</h4>
+          <p>File integrity monitoring system for compliance auditing. Real-time filesystem watching and cryptographic hash verification. Rust.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills -->
+    <div class="resume-section">
+      <h2 class="resume-section-title">Skills</h2>
+      <div style="margin-bottom: 16px;">
+        <p style="color: var(--text-muted); font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 8px;">LANGUAGES</p>
+        <div class="resume-skills-list">
+          <span>Python</span><span>TypeScript</span><span>SQL</span><span>R</span><span>Rust</span><span>JavaScript</span><span>HTML/CSS</span>
+        </div>
+      </div>
+      <div style="margin-bottom: 16px;">
+        <p style="color: var(--text-muted); font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 8px;">FRAMEWORKS & TOOLS</p>
+        <div class="resume-skills-list">
+          <span>scikit-learn</span><span>pandas</span><span>NumPy</span><span>Vite</span><span>Canvas2D</span><span>WebGL</span><span>Git/GitHub</span><span>Linux</span>
+        </div>
+      </div>
+      <div>
+        <p style="color: var(--text-muted); font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 8px;">DATABASES</p>
+        <div class="resume-skills-list">
+          <span>MySQL</span><span>PostgreSQL</span><span>Oracle</span><span>SQLite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certifications -->
+    <div class="resume-section">
+      <h2 class="resume-section-title">Certifications</h2>
+      <div class="resume-certs-grid">
+        <div class="resume-cert">CompTIA Security+ (SY0-701)<small>CompTIA</small></div>
+        <div class="resume-cert">Certified Scrum Master<small>Scrum Alliance</small></div>
+        <div class="resume-cert">Google Digital Marketing &amp; E-Commerce<small>Google</small></div>
+        <div class="resume-cert">Project Management Foundations<small>PMI / LinkedIn Learning</small></div>
+        <div class="resume-cert">ServSafe Food Handler<small>National Restaurant Assoc.</small></div>
+        <div class="resume-cert">CPR / First Aid / AED<small>American Red Cross</small></div>
+      </div>
+    </div>
+
+    <!-- Leadership -->
+    <div class="resume-section">
+      <h2 class="resume-section-title">Leadership &amp; Involvement</h2>
+      <ul class="resume-leadership-list" style="padding-left: 20px;">
+        <li>Georgia State University Honors College member</li>
+        <li>Certified Scrum Master &mdash; experienced in Agile sprint planning, standups, and retrospectives</li>
+        <li>Kitchen Manager at Chipotle &mdash; leading a team of 15+ in high-volume operations</li>
+        <li>Open-source contributor on GitHub (stabrea) &mdash; 8+ public repositories</li>
+      </ul>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">
@@ -49,5 +483,90 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // Email-gated PDF download
+    (function() {
+      var modal = document.getElementById('email-modal');
+      var emailInput = document.getElementById('email-input');
+      var submitBtn = document.getElementById('email-submit');
+      var skipBtn = document.getElementById('email-skip');
+      var errorMsg = document.getElementById('modal-error');
+      var downloadBtn = document.getElementById('download-pdf-btn');
+
+      if (!modal || !downloadBtn) return;
+
+      function openModal() {
+        modal.classList.add('active');
+        setTimeout(function() { emailInput.focus(); }, 100);
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        errorMsg.style.display = 'none';
+      }
+
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      function submitEmail() {
+        var email = emailInput.value.trim();
+        if (!isValidEmail(email)) {
+          errorMsg.style.display = 'block';
+          return;
+        }
+        errorMsg.style.display = 'none';
+
+        // Store locally
+        var collected = JSON.parse(localStorage.getItem('resume_emails') || '[]');
+        collected.push({ email: email, timestamp: new Date().toISOString() });
+        localStorage.setItem('resume_emails', JSON.stringify(collected));
+
+        // Send to Web3Forms (replace YOUR_ACCESS_KEY_HERE with your actual key from https://web3forms.com)
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: 'YOUR_ACCESS_KEY_HERE',
+            subject: 'Resume Download Request',
+            email: email,
+            message: 'Someone downloaded your resume from stabrea.github.io'
+          })
+        }).catch(function() {
+          // Silently fail — localStorage already has the record
+        });
+
+        closeModal();
+        triggerDownload();
+      }
+
+      function triggerDownload() {
+        // Replace this URL with the actual path to your PDF resume
+        var link = document.createElement('a');
+        link.href = 'Taofik_Bishi_Resume.pdf';
+        link.download = 'Taofik_Bishi_Resume.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      downloadBtn.addEventListener('click', openModal);
+      submitBtn.addEventListener('click', submitEmail);
+      emailInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') submitEmail();
+      });
+      skipBtn.addEventListener('click', closeModal);
+
+      // Close on overlay click
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>
