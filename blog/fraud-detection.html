@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A deep dive into building a machine learning pipeline for financial fraud detection, covering feature engineering, model selection, and hybrid scoring.">
   <meta name="author" content="Taofik Bishi">
+  <meta property="og:title" content="Detecting Financial Fraud with Machine Learning — Taofik Bishi">
+  <meta property="og:description" content="Building a high-precision ML pipeline that catches fraudulent transactions without drowning in false positives.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://stabrea.github.io/blog/fraud-detection.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1f6e1;</text></svg>">
   <title>Detecting Financial Fraud with Machine Learning | Taofik Bishi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +37,7 @@
       <div class="article-meta">
         <time datetime="2026-01-18">January 18, 2026</time>
         <span class="meta-separator">&middot;</span>
-        <span>8 min read</span>
+        <span>14 min read</span>
       </div>
       <h1 class="article-title">Detecting Financial Fraud with Machine Learning</h1>
       <p class="article-subtitle">Building a high-precision pipeline that catches fraudulent transactions without drowning in false positives.</p>
@@ -192,6 +197,47 @@
       </p>
       <p>
         <strong>Threshold tuning is a business decision, not a technical one.</strong> The optimal cutoff depends on the cost of false positives (analyst time, customer friction) versus false negatives (fraud losses). I exposed the threshold as a configurable parameter so that risk teams can adjust it based on their operational capacity.
+      </p>
+
+      <h2>The Class Imbalance Trap</h2>
+      <p>
+        This deserves its own section because it is the single most common mistake in fraud detection projects. In a typical transaction dataset, fraud represents less than 0.2% of records. A model that blindly predicts "not fraud" for every single transaction achieves 99.8% accuracy. This is the accuracy paradox, and it renders standard accuracy metrics meaningless for imbalanced classification problems.
+      </p>
+      <p>
+        The real challenge is not achieving high accuracy&mdash;it is achieving high <em>precision</em> and <em>recall</em> simultaneously on the minority class. Precision tells you what fraction of your fraud alerts are actually fraud (critical for analyst workload). Recall tells you what fraction of actual fraud you are catching (critical for loss prevention). The F1 score balances both, and the precision-recall AUC is a far better evaluation metric than ROC-AUC for imbalanced datasets.
+      </p>
+      <p>
+        I used three techniques to combat imbalance: <code>class_weight='balanced_subsample'</code> in the Random Forest, SMOTE oversampling of the minority class, and threshold optimization using the precision-recall curve. The threshold that maximized F1 on the validation set was 0.38&mdash;well below the default 0.5&mdash;because the model's probability estimates are naturally compressed toward the majority class.
+      </p>
+
+      <h2>Why Temporal Splits Matter</h2>
+      <p>
+        Most tutorials split data randomly into training and test sets. For fraud detection, this is a subtle but critical mistake. Random splitting creates temporal leakage: the model trains on transactions from June and July, then "predicts" fraud in May. In production, you never have future data available at prediction time.
+      </p>
+      <p>
+        I used a strict temporal split: training data from months 1-8, validation from month 9, and test from months 10-12. This simulates the real deployment scenario where the model only sees past transactions and must predict future ones. The performance drop from random splitting to temporal splitting was significant&mdash;AUC dropped from 0.96 to 0.92&mdash;but the temporal results are honest and reflect what you would actually see in production.
+      </p>
+      <p>
+        Temporal splitting also reveals concept drift. Fraud patterns evolve as attackers adapt to detection systems. A model trained on January data may perform well through March but degrade by June as new attack vectors emerge. Monitoring model performance over time and retraining on recent data is essential for maintaining production accuracy.
+      </p>
+
+      <h2>What Production Fraud Systems Need</h2>
+      <p>
+        Academic fraud detection models and production fraud systems have fundamentally different requirements. Building this project taught me what the gap looks like:
+      </p>
+      <ul>
+        <li><strong>Explainability:</strong> When an analyst reviews a flagged transaction, they need to know <em>why</em> the model flagged it. A probability score alone is not actionable. I integrated SHAP (SHapley Additive exPlanations) values to provide per-transaction feature attribution, so the top three reasons for each flag are surfaced alongside the risk score.</li>
+        <li><strong>Latency constraints:</strong> In production, fraud scoring happens in real-time as transactions are processed. The model must return a score in under 50ms. Random Forests are well-suited for this&mdash;prediction is just a series of tree traversals&mdash;but feature computation (especially rolling windows) requires careful engineering to avoid expensive database queries on every transaction.</li>
+        <li><strong>Drift detection:</strong> A model that worked last quarter may not work this quarter. Production systems need automated monitoring of input feature distributions and model performance metrics, with alerts when statistical drift exceeds a threshold. Without drift detection, a model can silently degrade for months.</li>
+        <li><strong>Feedback loops:</strong> Analyst decisions (confirm fraud / dismiss alert) should feed back into the training pipeline. This creates a virtuous cycle where the model improves from operational experience. But it also creates a selection bias: the model only receives feedback on transactions it flagged, not the ones it missed.</li>
+      </ul>
+
+      <h2>Comparison to Published Benchmarks</h2>
+      <p>
+        The most widely used public benchmark for credit card fraud detection is the Kaggle Credit Card Fraud Detection dataset (284,807 transactions, 492 fraudulent). Published results on this dataset typically achieve AUC-ROC between 0.95 and 0.98, but these numbers are inflated by random splitting and PCA-preprocessed features that remove real-world noise.
+      </p>
+      <p>
+        On my own dataset with temporal splitting and raw engineered features, the 0.92 AUC is competitive with production-grade systems. Research papers from major financial institutions report AUC between 0.90 and 0.95 on real transaction data, with the top performers using deep learning ensembles and graph neural networks to model cardholder behavior as a network. My hybrid Random Forest + Isolation Forest approach lands in the middle of this range while maintaining interpretability&mdash;a trade-off that most production teams prefer over marginal accuracy gains from black-box models.
       </p>
 
       <div class="article-cta">

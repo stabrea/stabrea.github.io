@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A walkthrough of building a network security assessment toolkit from scratch with Python, covering port scanning, service detection, vulnerability checks, and report generation.">
   <meta name="author" content="Taofik Bishi">
+  <meta property="og:title" content="Building a Network Security Assessment Toolkit — Taofik Bishi">
+  <meta property="og:description" content="Why I wrote my own port scanner, banner grabber, and vulnerability checker instead of reaching for Nmap.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://stabrea.github.io/blog/network-security.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1f6e1;</text></svg>">
   <title>Building a Network Security Assessment Toolkit from Scratch | Taofik Bishi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +37,7 @@
       <div class="article-meta">
         <time datetime="2026-02-10">February 10, 2026</time>
         <span class="meta-separator">&middot;</span>
-        <span>9 min read</span>
+        <span>15 min read</span>
       </div>
       <h1 class="article-title">Building a Network Security Assessment Toolkit from Scratch</h1>
       <p class="article-subtitle">Why I wrote my own port scanner, banner grabber, and vulnerability checker instead of reaching for Nmap.</p>
@@ -371,6 +376,50 @@ def check_http_headers(host: str, port: int = 80) -> list[dict]:
       </p>
       <p>
         <strong>The report is the deliverable.</strong> No one reads raw JSON. The value of a security assessment is in clearly communicating what was found, how severe it is, and what to do about it. I spent as much time on the report generation module as on the scanning logic, and that was the right allocation.
+      </p>
+
+      <h2>What Port States Reveal About Firewall Configuration</h2>
+      <p>
+        The three port states&mdash;open, closed, and filtered&mdash;each tell a distinct story about the target's security posture. An <strong>open</strong> port means a service is actively listening and accepting connections. A <strong>closed</strong> port responds with a TCP RST packet, indicating the host is reachable but no service is bound to that port. A <strong>filtered</strong> port produces no response at all, suggesting a firewall is silently dropping packets.
+      </p>
+      <p>
+        The ratio of closed to filtered ports reveals the firewall strategy. If most unused ports return "closed," the host is likely using a permissive firewall (or no firewall at all) that allows traffic through to the OS network stack. If most unused ports are "filtered," there is a stateful firewall dropping packets before they reach the host&mdash;a much stronger posture. A mixed pattern (some closed, some filtered) often indicates a misconfigured firewall with incomplete rules, or a host sitting behind both a network firewall and a host-based firewall with different rule sets.
+      </p>
+      <p>
+        Specific open ports also paint a picture. Port 22 (SSH) and 3389 (RDP) indicate remote management access&mdash;these should never be exposed to the public internet without additional controls like VPN or allowlisting. Ports 135-139 and 445 (SMB/NetBIOS) exposed externally are a critical finding, as they are among the most commonly exploited attack vectors. Port 8080 or 8443 often indicate development or staging services that should not be in production.
+      </p>
+
+      <h2>Inferring Network Architecture from Scan Results</h2>
+      <p>
+        A skilled assessor can infer significant architectural information from scan results alone. If an external scan reveals only ports 80 and 443, with all others filtered, the target is likely behind a well-configured reverse proxy or load balancer. If the same IP responds on ports 22, 80, 443, and 3306 (MySQL), you are probably looking at a single-server deployment without proper network segmentation&mdash;the database is directly reachable from the internet.
+      </p>
+      <p>
+        Banner information adds another layer. An HTTP server header revealing "nginx/1.24" behind port 443 while an SSH banner shows "OpenSSH_9.0 Ubuntu" confirms the operating system and suggests the infrastructure is a single Linux host. Different HTTP server versions on port 80 vs 8080 might indicate a reverse proxy in front of an application server. These details inform the attack surface assessment and help prioritize where to focus deeper analysis.
+      </p>
+      <p>
+        TTL (Time To Live) values in responses can reveal how many network hops separate the scanner from the target, hinting at whether the host is in a DMZ, a cloud VPC, or directly connected. Linux systems typically start with a TTL of 64, Windows with 128. A response with TTL 55 from a Linux host suggests approximately 9 network hops&mdash;common for cloud-hosted infrastructure behind multiple routing layers.
+      </p>
+
+      <h2>Why Internal Scans Matter More Than Perimeter Scans</h2>
+      <p>
+        Traditional network security focused on perimeter defense: build a strong firewall at the network edge and trust everything inside. The Zero Trust model inverts this assumption. In a Zero Trust architecture, no network location is inherently trusted. An attacker who compromises a single endpoint (via phishing, for example) is already inside the perimeter. Internal network scans reveal the attack surface that this attacker would see.
+      </p>
+      <p>
+        Internal scans almost always reveal a dramatically larger attack surface than external scans. Services like database servers (MySQL 3306, PostgreSQL 5432), message queues (Redis 6379, RabbitMQ 5672), and internal APIs are typically not exposed externally but are wide open within the internal network. In many organizations, these internal services run without authentication because "they are behind the firewall." This is exactly the assumption Zero Trust challenges.
+      </p>
+      <p>
+        The toolkit supports both external and internal scan profiles. The internal profile scans a broader port range (full 65,535 vs. common 1,024), checks for default credentials on discovered services, and validates network segmentation by testing whether hosts in different subnets can communicate when they should not be able to. The most valuable finding from an internal scan is often not a specific vulnerability but a segmentation failure&mdash;a development server that can reach the production database directly.
+      </p>
+
+      <h2>TLS Configuration as a Security Maturity Barometer</h2>
+      <p>
+        An organization's TLS configuration is one of the most reliable indicators of their overall security maturity. TLS is a public-facing, easily auditable configuration. If an organization cannot get TLS right&mdash;something with well-documented best practices and free tooling (Let's Encrypt, Mozilla SSL Configuration Generator)&mdash;it is unlikely that their internal security practices are strong.
+      </p>
+      <p>
+        The toolkit evaluates TLS across several dimensions: protocol versions supported (TLS 1.2 and 1.3 only should be accepted; anything older is a finding), cipher suite strength (AEAD ciphers like AES-GCM and ChaCha20-Poly1305 are preferred; CBC-mode ciphers are a yellow flag), certificate chain validity (expired certificates, self-signed certificates, incomplete chains), and HSTS header presence (whether the server instructs browsers to always use HTTPS).
+      </p>
+      <p>
+        In practice, I have found that TLS configuration quality correlates strongly with patch management, access control practices, and incident response preparedness. Organizations with A+ ratings on SSL Labs tend to have mature security programs across the board. Organizations still supporting TLS 1.0 or using self-signed certificates in production often have corresponding weaknesses throughout their infrastructure.
       </p>
 
       <div class="article-cta">
