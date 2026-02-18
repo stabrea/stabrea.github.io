@@ -44,7 +44,19 @@
       }
     }
 
-    setInterval(draw, 60);
+    var matrixInterval = setInterval(draw, 60);
+
+    // Pause matrix animation when tab is hidden to save resources
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        clearInterval(matrixInterval);
+        matrixInterval = null;
+      } else {
+        if (!matrixInterval) {
+          matrixInterval = setInterval(draw, 60);
+        }
+      }
+    });
   }
 
   // ---- Typing Effect ----
