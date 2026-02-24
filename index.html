@@ -49,6 +49,41 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .skills-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+    .skills-category-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .skills-tag-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .skill-badge {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .skill-badge:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  </style>
 </head>
 <body>
   <!-- Matrix Background Canvas -->
@@ -142,78 +177,48 @@
   <section id="skills" class="section section-alt">
     <div class="container">
       <h2 class="section-title fade-in">Skills &amp; Expertise</h2>
-      <div class="skills-grid fade-in">
+      <div class="skills-categories fade-in">
 
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Python</span>
-            <span class="skill-level">90%</span>
+        <div class="skills-category">
+          <h3 class="skills-category-title">Languages</h3>
+          <div class="skills-tag-grid">
+            <span class="skill-badge">Python</span>
+            <span class="skill-badge">TypeScript</span>
+            <span class="skill-badge">SQL</span>
+            <span class="skill-badge">JavaScript</span>
+            <span class="skill-badge">Rust</span>
+            <span class="skill-badge">R</span>
+            <span class="skill-badge">HTML/CSS</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-          <span class="skill-tag">Fraud Detection ML Pipeline, Network Scanner, Encryption Toolkit, Tax Compliance Engine</span>
         </div>
 
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">TypeScript</span>
-            <span class="skill-level">85%</span>
+        <div class="skills-category">
+          <h3 class="skills-category-title">Security &amp; Finance</h3>
+          <div class="skills-tag-grid">
+            <span class="skill-badge">Network Security</span>
+            <span class="skill-badge">Cryptography</span>
+            <span class="skill-badge">Fraud Detection</span>
+            <span class="skill-badge">Financial Analysis</span>
+            <span class="skill-badge">Tax Compliance</span>
+            <span class="skill-badge">Risk Modeling</span>
+            <span class="skill-badge">CompTIA Security+</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
-          <span class="skill-tag">EDILAS Dark RPG (98 modules, 1,425 tests, 37+ systems, Phaser 3 + bitECS)</span>
         </div>
 
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">SQL</span>
-            <span class="skill-level">85%</span>
+        <div class="skills-category">
+          <h3 class="skills-category-title">Tools</h3>
+          <div class="skills-tag-grid">
+            <span class="skill-badge">Git / GitHub</span>
+            <span class="skill-badge">Linux</span>
+            <span class="skill-badge">Phaser 3</span>
+            <span class="skill-badge">bitECS</span>
+            <span class="skill-badge">Vite</span>
+            <span class="skill-badge">scikit-learn</span>
+            <span class="skill-badge">pandas</span>
+            <span class="skill-badge">NumPy</span>
+            <span class="skill-badge">MySQL</span>
+            <span class="skill-badge">PostgreSQL</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
-          <span class="skill-tag">Financial Analytics across MySQL, PostgreSQL, Oracle</span>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Network Security</span>
-            <span class="skill-level">80%</span>
-          </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
-          <span class="skill-tag">Port scanning, vulnerability assessment, SSL/TLS auditing, CompTIA Security+</span>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Cryptography</span>
-            <span class="skill-level">80%</span>
-          </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
-          <span class="skill-tag">AES-256-GCM, PBKDF2, key management, password analysis</span>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Financial Analysis</span>
-            <span class="skill-level">85%</span>
-          </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
-          <span class="skill-tag">Tax compliance, Monte Carlo VaR, portfolio risk metrics</span>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Machine Learning</span>
-            <span class="skill-level">75%</span>
-          </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
-          <span class="skill-tag">Random Forest, Isolation Forest, SHAP explainability, class imbalance handling</span>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-header">
-            <span class="skill-name">Rust</span>
-            <span class="skill-level">70%</span>
-          </div>
-          <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
-          <span class="skill-tag">Sentinel &mdash; file integrity monitoring for compliance</span>
         </div>
 
       </div>
